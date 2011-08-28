@@ -53,7 +53,6 @@ class Character(pygame.sprite.Sprite):
     def get_pos(self):
         return(self.posX,self.posY)
 
-    # Update function called on line 46
     # This function computes the inputs and computes where the
     #     character should be
     # The width and height called in this function are the
@@ -61,11 +60,11 @@ class Character(pygame.sprite.Sprite):
     def update(self,t,width,height,moveup,moveleft,movedown,
             moveright,movem,movesp):
         # Calculate movement
-        if movedown and ((self.posY + self._h) > height):
-            self.posY += movesp
+        if movedown and ((self.posY + self._h) < height):
+            self.posY += movesp 
         if moveup and self.posY > 0:
             self.posY -= movesp
-        if moveright and ((self.posX + self._w) > width):
+        if moveright and ((self.posX + self._w) < width):
             self.posX += movesp
         if moveleft and self.posX > 0:
             self.posX -= movesp
@@ -89,7 +88,7 @@ def main():
     moveUp = False
     moveDown = False
     movement = False
-    MOVESPEED = 6
+    MOVESPEED = 3
     # *** END CONSTANT CODE ***
     
     # Perform inits
