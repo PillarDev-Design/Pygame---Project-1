@@ -91,8 +91,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_W,SCREEN_H))
     # Load images
-    background = pygame.image.load("field.png")
-    img_orc = pygame.image.load("orc.png")
+    background = pygame.image.load("resources/field.png")
+    img_orc = pygame.image.load("resources/orc.png")
     # Create instance of class
     # From what I can dicern...
     # source image = img_orc
