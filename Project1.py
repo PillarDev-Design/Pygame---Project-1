@@ -19,7 +19,7 @@ class Character(pygame.sprite.Sprite):
     posX = 200
     posY = 200
     # Code when the class initializes
-    def __init__(self,img,frames,modes,width,height,fps=3):
+    def __init__(self,img,frames=1,modes=1,width=32,height=32,fps=3):
         # Init the sprite
         pygame.sprite.Sprite.__init__(self)
         # Capture the full size of the imported PNG
@@ -42,7 +42,7 @@ class Character(pygame.sprite.Sprite):
         # Clear and declare the last update
         self._last_update = 0
         # The following links with the class function call update
-        # Parameters (time, width, height)
+        # Parameters (time, width, height) 
         # self.update(pygame.time.get_ticks(), 100, 100)
 
     # Set position function
@@ -53,7 +53,7 @@ class Character(pygame.sprite.Sprite):
     def get_pos(self):
         return(self.posX,self.posY)
 
-    # This function computes the inputs and computes where the
+    # This function computes the inputs and cmputes where the
     #     character should be
     # The width and height called in this function are the
     #     SCREEN_W, SCREEN_H
@@ -69,13 +69,15 @@ class Character(pygame.sprite.Sprite):
         if moveleft and self.posX > 0:
             self.posX -= movesp
         # Calculate frame flip
+        
         if movem:
             if t - self._last_update > self._delay:
                 self._frame += 1
                 if self._frame >= len(self._framelist):
                     self._frame = 0
-                self._image = self._framelist[self._frame]
+                self.image = self._framelist[self._frame]
                 self._last_update = t
+        
 # *** END CLASS CODE ***
 
 # *** MAIN FUNCTION ***
@@ -83,6 +85,7 @@ def main():
     # *** DECLARE CONSTANTS ***
     SCREEN_W = 300
     SCREEN_H = 300
+    # Make into a list?
     moveLeft = False
     moveRight = False
     moveUp = False
@@ -102,7 +105,7 @@ def main():
     
     # Create instance of class with the following paramters specified above
     # Target_Image, Total Frames, Modes, Width, Height, FPS (Optional, set at 3)
-    orc = Character(img_orc, 4, 1, 32, 48)
+    orc = Character(img_orc, 4, 1, 32, 48, 3)
 
     # Game Loop
     while True:
