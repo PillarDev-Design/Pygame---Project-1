@@ -57,20 +57,19 @@ class Character(pygame.sprite.Sprite):
     #     character should be
     # The width and height called in this function are the
     #     SCREEN_W, SCREEN_H
-    def update(self,t,width,height,moveup,moveleft,movedown,
-            moveright,movem,movesp):
+    def update(self,t,width,height,moveDict):
         # Calculate movement
-        if movedown and ((self.posY + self._h) < height):
-            self.posY += movesp 
-        if moveup and self.posY > 0:
-            self.posY -= movesp
-        if moveright and ((self.posX + self._w) < width):
-            self.posX += movesp
-        if moveleft and self.posX > 0:
-            self.posX -= movesp
+        if moveDict['moveDown'] and ((self.posY + self._h) < height):
+            self.posY += moveDict['MOVESPEED'] 
+        if moveDict['moveUp'] and self.posY > 0:
+            self.posY -= moveDict['MOVESPEED']
+        if moveDict['moveRight'] and ((self.posX + self._w) < width):
+            self.posX += moveDict['MOVESPEED']
+        if moveDict['moveLeft'] and self.posX > 0:
+            self.posX -= moveDict['MOVESPEED']
         # Calculate frame flip
         
-        if movem:
+        if moveDict['movement']:
             if t - self._last_update > self._delay:
                 self._frame += 1
                 if self._frame >= len(self._framelist):
@@ -82,17 +81,18 @@ class Character(pygame.sprite.Sprite):
 
 # *** MAIN FUNCTION ***
 def main():
-    # *** DECLARE CONSTANTS ***
+    # *** DECLARE CONSTANTS/VARIABLES ***
     SCREEN_W = 300
     SCREEN_H = 300
-    # Make into a list?
-    moveLeft = False
-    moveRight = False
-    moveUp = False
-    moveDown = False
-    movement = False
-    MOVESPEED = 3
-    # *** END CONSTANT CODE ***
+    moveDict = {
+        'moveLeft':False,
+        'moveRight':False,
+        'moveUp':False,
+        'moveDown':False,
+        'MOVESPEED':3,
+        'movement':False
+        }
+    # *** END CONSTANT/VARIABLE CODE ***
     
     # Perform inits
     pygame.init()
@@ -116,43 +116,42 @@ def main():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_LEFT or event.key == ord('a'):
-                    moveRight = False
-                    moveLeft = True
-                    movement = True
+                    moveDict['moveRight'] = False
+                    moveDict['moveLeft'] = True
+                    moveDict['movement'] = True
                 if event.key == K_RIGHT or event.key == ord('d'):
-                    moveLeft = False
-                    moveRight = True
-                    movement = True
+                    moveDict['moveLeft'] = False
+                    moveDict['moveRight'] = True
+                    moveDict['movement'] = True
                 if event.key == K_UP or event.key == ord('w'):
-                    moveDown = False
-                    moveUp = True
-                    movement = True
+                    moveDict['moveDown'] = False
+                    moveDict['moveUp'] = True
+                    moveDict['movement'] = True
                 if event.key == K_DOWN or event.key == ord('s'):
-                    moveUp = False
-                    moveDown = True
-                    movement = True
+                    moveDict['moveUp'] = False
+                    moveDict['moveDown'] = True 
+                    moveDict['movement'] = True
             if event.type == KEYUP:
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
                 if event.key == K_LEFT or event.key == ord('a'):
-                    moveLeft = False
-                    movement = False
+                    moveDict['moveLeft'] = False
+                    moveDict['movement'] = False
                 if event.key == K_RIGHT or event.key == ord('d'):
-                    moveRight = False
-                    movement = False
+                    moveDict['moveRight'] = False
+                    moveDict['movement'] = False
                 if event.key == K_UP or event.key == ord('w'):
-                    moveUp = False
-                    movement = False
+                    moveDict['moveUp'] = False
+                    moveDict['movement'] = False
                 if event.key == K_DOWN or event.key == ord('s'):
-                    moveDown = False
-                    movement = False
+                    moveDict['moveDown'] = False
+                    moveDict['movement'] = False
         # Now to render everything
         screen.blit(background,(0,0))
         screen.blit(orc.image,orc.get_pos())
         # Update the orc input
-        orc.update(pygame.time.get_ticks(),SCREEN_W,SCREEN_H,
-                moveUp,moveLeft,moveDown,moveRight,movement,MOVESPEED)
+        orc.update(pygame.time.get_ticks(),SCREEN_W,SCREEN_H,moveDict)
         # Update the display
         pygame.display.update()
         # Delay
